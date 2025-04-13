@@ -22,6 +22,7 @@ function App() {
         <FacilityComparison />
         <ReductionProgress />
         <InsightsPanel />
+        
       </div>
     </div>
   )

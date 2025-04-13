@@ -1,0 +1,150 @@
+{
+  "metadata": {
+    "company": "Fashion Brand Inc.",
+    "period": "March 12 - April 11, 2025",
+    "facilities": ["Shanghai", "Dhaka", "Istanbul", "Mexico City", "Milan"],
+    "wasteCategories": ["Fabric Scraps", "Rejected Items", "End-of-Roll", "Damaged Materials", "Thread/Trim"]
+  },
+  "dailyData": [
+    {
+      "date": "2025-03-12",
+      "totalWaste": 201.4,
+      "productionUnits": 543,
+      "wasteByCategory": {
+        "Fabric Scraps": 98.6,
+        "Rejected Items": 46.3,
+        "End-of-Roll": 32.2,
+        "Damaged Materials": 15.8,
+        "Thread/Trim": 8.5
+      },
+      "wasteByFacility": {
+        "Shanghai": 68.4,
+        "Dhaka": 42.3,
+        "Istanbul": 32.6,
+        "Mexico City": 46.8,
+        "Milan": 11.3
+      },
+      "recoveryRate": 38.2,
+      "costImpact": 740.15
+    }
+  ],
+  "wasteByCategory": {
+    "Fabric Scraps": 2732.5,
+    "Rejected Items": 1352.6,
+    "End-of-Roll": 881.6,
+    "Damaged Materials": 456.7,
+    "Thread/Trim": 254.0
+  },
+  "wasteByFacility": {
+    "Shanghai": 1930.5,
+    "Dhaka": 1191.4,
+    "Istanbul": 909.6,
+    "Mexico City": 1319.3,
+    "Milan": 336.6
+  },
+  "monthlyTotals": {
+    "totalWaste": 5677.4,
+    "totalProductionUnits": 15510,
+    "avgWastePerUnit": 0.366,
+    "totalCostImpact": 20888.04,
+    "avgRecoveryRate": 39.8
+  },
+  "weeklyTotals": [
+    {
+      "weekStarting": "2025-03-12",
+      "totalWaste": 1378.7,
+      "avgRecoveryRate": 38.8,
+      "costImpact": 5074.48
+    },
+    {
+      "weekStarting": "2025-03-19",
+      "totalWaste": 1334.8,
+      "avgRecoveryRate": 39.6,
+      "costImpact": 4912.57
+    },
+    {
+      "weekStarting": "2025-03-26",
+      "totalWaste": 1308.0,
+      "avgRecoveryRate": 40.0,
+      "costImpact": 4814.45
+    },
+    {
+      "weekStarting": "2025-04-02",
+      "totalWaste": 1282.4,
+      "avgRecoveryRate": 40.5,
+      "costImpact": 4720.09
+    },
+    {
+      "weekStarting": "2025-04-09",
+      "totalWaste": 549.4,
+      "avgRecoveryRate": 40.5,
+      "costImpact": 2022.40
+    }
+  ],
+  "trends": {
+    "wasteTrend": -10.2,
+    "wastePerUnitTrend": -7.8,
+    "recoveryRateTrend": 7.1,
+    "costImpactTrend": -10.0
+  },
+  "insights": [
+    {
+      "title": "Pattern Efficiency Opportunity",
+      "description": "Shanghai facility showing 12% higher fabric waste than others. Review cutting patterns.",
+      "priority": "high",
+      "wasteReductionPotential": 128.7,
+      "costSavingPotential": 473.62
+    },
+    {
+      "title": "Success: Rejected Items Reduction",
+      "description": "Quality control improvements reduced rejected garments by 8.2% this month.",
+      "priority": "medium",
+      "wasteReductionPotential": 110.9,
+      "costSavingPotential": 408.21
+    },
+    {
+      "title": "End-of-Roll Optimization",
+      "description": "Consider smaller batch production for premium lines to reduce end-of-roll waste.",
+      "priority": "medium",
+      "wasteReductionPotential": 79.3,
+      "costSavingPotential": 291.93
+    },
+    {
+      "title": "Thread Waste Anomaly",
+      "description": "Thread waste remains consistent despite overall waste reduction. Investigate trimming processes.",
+      "priority": "low",
+      "wasteReductionPotential": 16.5,
+      "costSavingPotential": 60.72
+    },
+    {
+      "title": "Milan Facility Best Practices",
+      "description": "Milan's waste per unit is 15% lower than other facilities. Document and share techniques.",
+      "priority": "high",
+      "wasteReductionPotential": 197.9,
+      "costSavingPotential": 728.38
+    }
+  ],
+  "targets": {
+    "wasteReduction": {
+      "target": 25.0,
+      "current": 17.3,
+      "progressPercentage": 69.2
+    },
+    "recoveryRate": {
+      "target": 60.0,
+      "current": 39.8,
+      "progressPercentage": 66.3
+    },
+    "costReduction": {
+      "target": 30.0,
+      "current": 16.2,
+      "progressPercentage": 54.0
+    }
+  },
+  "benchmarks": {
+    "industryAvgWastePerUnit": 0.42,
+    "industryAvgRecoveryRate": 32.8,
+    "bestPracticeWastePerUnit": 0.29,
+    "bestPracticeRecoveryRate": 56.5
+  }
+} 
