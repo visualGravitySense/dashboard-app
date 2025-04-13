@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeautyTrack Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #8e44ad;
+            --secondary-color: #d2b4de;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --bg-color: #f4f6f9;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--dark-color);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            color: var(--primary-color);
+            margin-left: 10px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto auto auto;
+            gap: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .card-action {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .card-action:hover {
+            color: var(--primary-color);
+        }
+        
+        .overview-card {
+            grid-column: span 3;
+        }
+        
+        .location-card {
+            grid-column: span 3;
+        }
+        
+        .usage-card, .procurement-card, .expiration-card {
+            grid-column: span 1;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-box {
+            background-color: rgba(240, 240, 240, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-box h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .stat-box p {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .status-healthy {
+            background-color: var(--success-color);
+        }
+        
+        .status-low {
+            background-color: var(--warning-color);
+        }
+        
+        .status-critical {
+            background-color: var(--danger-color);
+        }
+        
+        .product-category {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .category-bar {
+            flex-grow: 1;
+            height: 20px;
+            background-color: #eee;
+            margin: 0 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .category-fill {
+            height: 100%;
+            border-radius: 10px;
+        }
+        
+        .hair-fill {
+            background-color: var(--primary-color);
+        }
+        
+        .skin-fill {
+            background-color: var(--success-color);
+        }
+        
+        .nails-fill {
+            background-color: var(--warning-color);
+        }
+        
+        .retail-fill {
+            background-color: var(--danger-color);
+        }
+        
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+        
+        .location-card-mini {
+            background-color: rgba(240, 240, 240, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .location-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .location-status {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            color: white;
+        }
+        
+        .status-normal {
+            background-color: var(--success-color);
+        }
+        
+        .status-warning {
+            background-color: var(--warning-color);
+        }
+        
+        .status-alert {
+            background-color: var(--danger-color);
+        }
+        
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .products-table th, .products-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .products-table th {
+            color: #777;
+            font-weight: 600;
+        }
+        
+        .chart-container {
+            height: 250px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .tab-container {
+            margin-bottom: 15px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .alert {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 3px solid;
+        }
+        
+        .alert-warning {
+            background-color: #fff3cd;
+            border-left-color: var(--warning-color);
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            border-left-color: var(--danger-color);
+        }
+        
+        .alert-info {
+            background-color: #d1ecf1;
+            border-left-color: #17a2b8;
+        }
+        
+        .alert-text {
+            margin-left: 10px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .overview-card, .location-card {
+                grid-column: span 2;
+            }
+            
+            .usage-card, .procurement-card, .expiration-card {
+                grid-column: span 1;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .locations-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .overview-card, .location-card, .usage-card, .procurement-card, .expiration-card {
+                grid-column: span 1;
+            }
+            
+            .locations-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 3V7C14 7.26522 14.1054 7.51957 14.2929 7.70711C14.4804 7.89464 14.7348 8 15 8H19" stroke="#8e44ad" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17 21H7C6.46957 21 5.96086 20.7893 5.58579 20.4142C5.21071 20.0391 5 19.5304 5 19V5C5 4.46957 5.21071 3.96086 5.58579 3.58579C5.96086 3.21071 6.46957 3 7 3H14L19 8V19C19 19.5304 18.7893 20.0391 18.4142 20.4142C18.0391 20.7893 17.5304 21 17 21Z" stroke="#8e44ad" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 17C9 16.4696 9.21071 15.9609 9.58579 15.5858C9.96086 15.2107 10.4696 15 11 15C11.5304 15 12.0391 15.2107 12.4142 15.5858C12.7893 15.9609 13 16.4696 13 17" stroke="#8e44ad" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10 13C10 13.5523 9.55228 14 9 14C8.44772 14 8 13.5523 8 13C8 12.4477 8.44772 12 9 12C9.55228 12 10 12.4477 10 13Z" fill="#8e44ad"/>
+                    <path d="M15 13C15 13.5523 14.5523 14 14 14C13.4477 14 13 13.5523 13 13C13 12.4477 13.4477 12 14 12C14.5523 12 15 12.4477 15 13Z" fill="#8e44ad"/>
+                </svg>
+                <h1>BeautyTrack</h1>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">SM</div>
+                <div>
+                    <p>Sarah Manager</p>
+                    <small>Admin</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard">
+            <!-- Inventory Overview Card -->
+            <div class="card overview-card">
+                <div class="card-header">
+                    <div class="card-title">Inventory Overview</div>
+                    <div class="card-actions">
+                        <button class="card-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button class="card-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 6H5H21M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button class="card-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <h3>1,253</h3>
+                        <p>Total Products</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>37</h3>
+                        <p><span class="status-indicator status-critical"></span>Critical Stock</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>82</h3>
+                        <p><span class="status-indicator status-low"></span>Low Stock</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3>42</h3>
+                        <p>Expiring Soon</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h3 style="margin-bottom: 15px; font-size: 16px;">Product Categories</h3>
+                    <div class="product-category">
+                        <span>Hair</span>
+                        <div class="category-bar">
+                            <div class="category-fill hair-fill" style="width: 45%;"></div>
+                        </div>
+                        <span>45%</span>
+                    </div>
+                    <div class="product-category">
+                        <span>Skin</span>
+                        <div class="category-bar">
+                            <div class="category-fill skin-fill" style="width: 30%;"></div>
+                        </div>
+                        <span>30%</span>
+                    </div>
+                    <div class="product-category">
+                        <span>Nails</span>
+                        <div class="category-bar">
+                            <div class="category-fill nails-fill" style="width: 15%;"></div>
+                        </div>
+                        <span>15%</span>
+                    </div>
+                    <div class="product-category">
+                        <span>Retail</span>
+                        <div class="category-bar">
+                            <div class="category-fill retail-fill" style="width: 10%;"></div>
+                        </div>
+                        <span>10%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Location Comparison Card -->
+            <div class="card location-card">
+                <div class="card-header">
+                    <div class="card-title">Location Comparison</div>
+                    <div class="card-actions">
+                        <button class="card-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 6H5H21M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <button class="card-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <div class="alert alert-danger">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 9V13M12 17H12.01M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="alert-text">Location #3 has 12 products at critical level</span>
+                    </div>
+                    <div class="alert alert-warning">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 9V13M12 17H12.01M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#f39c12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="alert-text">Location #5 turnover rate is below target by 15%</span>
+                    </div>
+                </div>
+                
+                <div class="locations-grid">
+                    <div class="location-card-mini">
+                        <div class="location-header">
+                            <h3>Location #1</h3>
+                            <span class="location-status status-normal">Normal</span>
+                        </div>
+                        <div>
+                            <p><strong>354</strong> Products</p>
+                            <p><strong>97%</strong> Stock Level</p>
+                            <p><strong>2.4x</strong> Turnover Rate</p>
+                        </div>
+                    </div>
+                    <div class="location-card-mini">
+                        <div class="location-header">
+                            <h3>Location #2</h3>
+                            <span class="location-status status-normal">Normal</span>
+                        </div>
+                        <div>
+                            <p><strong>287</strong> Products</p>
+                            <p><strong>92%</strong> Stock Level</p>
+                            <p><strong>2.1x</strong> Turnover Rate</p>
+                        </div>
+                    </div>
+                    <div class="location-card-mini">
+                        <div class="location-header">
+                            <h3>Location #3</h3>
+                            <span class="location-status status-alert">Alert</span>
+                        </div>
+                        <div>
+                            <p><strong>198</strong> Products</p>
+                            <p><strong>68%</strong> Stock Level</p>
+                            <p><strong>3.2x</strong> Turnover Rate</p>
+                        </div>
+                    </div>
+                    <div class="location-card-mini">
+                        <div class="location-header">
+                            <h3>Location #4</h3>
+                            <span class="location-status status-normal">Normal</span>
+                        </div>
+                        <div>
+                            <p><strong>276</strong> Products</p>
+                            <p><strong>89%</strong> Stock Level</p>
+                            <p><strong>2.7x</strong> Turnover Rate</p>
+                        </div>
+                    </div>
+                    <div class="location-card-mini">
+                        <div class="location-header">
+                            <h3>Location #5</h3>
+                            <span class="location-status status-warning">Warning</span>
+                        </div>
+                        <div>
+                            <p><strong>138</strong> Products</p>
+                            <p><strong>85%</strong> Stock Level</p>
+                            <p><strong>1.5x</strong> Turnover Rate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Usage Analytics Card -->
+            <div class="card usage-card">
+                <div class="card-header">
+                    <div class="card-title">Usage Analytics</div>
+                    <div class="card-actions">
+                        <button class="card-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 6H5H21M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="tab-container">
+                    <div class="tabs">
+                        <div class="tab active">Monthly</div>
+                        <div class="tab">By Service</div>
+                        <div class="tab">Top Products</div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <svg width="100%" height="100%" viewBox="0 0 500 250" xmlns="http://www.w3.org/2000/svg">
+                        <!-- X and Y Axis -->
+                        <line x1="50" y1="200" x2="450" y2="200" stroke="#ddd" stroke-width="2" />
+                        <line x1="50" y1="200" x2="50" y2="50" stroke="#ddd" stroke-width="2" />
+                        
+                        <!-- Y-Axis Labels -->
+                        <text x="30" y="200" font-size="12" text-anchor="end" fill="#777">0</text>
+                        <text x="30" y="150" font-size="12" text-anchor="end" fill="#777">50</text>
+                        <text x="30" y="100" font-size="12" text-anchor="end" fill="#777">100</text>
+                        <text x="30" y="50" font-size="12" text-anchor="end" fill="#777">150</text>
+                        
+                        <!-- X-Axis Labels -->
+                        <text x="83" y="220" font-size="12" text-anchor="middle" fill="#777">Apr</text>
+                        <text x="150" y="220" font-size="12" text-anchor="middle" fill="#777">May</text>
+                        <text x="217" y="220" font-size="12" text-anchor="middle" fill="#777">Jun</text>
+                        <text x="284" y="220" font-size="12" text-anchor="middle" fill="#777">Jul</text>
+                        <text x="351" y="220" font-size="12" text-anchor="middle" fill="#777">Aug</text>
+                        <text x="418" y="220" font-size="12" text-anchor="middle" fill="#777">Sep</text>
+                        
+                        <!-- Grid Lines -->
+                        <line x1="50" y1="150" x2="450" y2="150" stroke="#eee" stroke-width="1" />
+                        <line x1="50" y1="100" x2="450" y2="100" stroke="#eee" stroke-width="1" />
+                        <line x1="50" y1="50" x2="450" y2="50" stroke="#eee" stroke-width="1" />
+                        
+                        <!-- Hair Products Line -->
+                        <polyline 
+                            points="83,120 150,110 217,90 284,105 351,80 418,60" 
+                            fill="none" 
+                            stroke="#8e44ad" 
+                            stroke-width="3" 
+                        />
+                        <circle cx="83" cy="120" r="4" fill="#8e44ad" />
+                        <circle cx="150" cy="110" r="4" fill="#8e44ad" />
+                        <circle cx="217" cy="90" r="4" fill="#8e44ad" />
+                        <circle cx="284" cy="105" r="4" fill="#8e44ad" />
+                        <circle cx="351" cy="80" r="4" fill="#8e44ad" />
+                        <circle cx="418" cy="60" r="4" fill="#8e44ad" />
+                        
+                        <!-- Skin Products Line -->
+                        <polyline 
+                            points="83,140 150,130 217,120 284,110 351,115 418,90" 
+                            fill="none" 
+                            stroke="#27ae60" 
+                            stroke-width="3" 
+                        />
+                        <circle cx="83" cy="140" r="4" fill="#27ae60" />
+                        <circle cx="150" cy="130" r="4" fill="#27ae60" />
+                        <circle cx="217" cy="120" r="4" fill="#27ae60" />
+                        <circle cx="284" cy="110" r="4" fill="#27ae60" />
+                        <circle cx="351" cy="115" r="4" fill="#27ae60" />
+                        <circle cx="418" cy="90" r="4" fill="#27ae60" />
+                        
+                        <!-- Legend -->
+                        <rect x="350" y="10" width="12" height="12" fill="#8e44ad" />
+                        <text x="370" y="20" font-size="12" fill="#777">Hair Products</text>
+                        <rect x="350" y="30" width="12" height="12" fill="#27ae60" />
+                        <text x="370" y="40" font-size="12" fill="#777">Skin Products</text>
+                    </svg>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h3 style="margin-bottom: 10px; font-size: 16px;">Top Used Products</h3>
+                    <table class="products-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Usage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Premium Color #5</td>
+                                <td>127 units</td>
+                            </tr>
+                            <tr>
+                                <td>Facial Clean
