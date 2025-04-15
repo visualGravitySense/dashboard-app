@@ -21,34 +21,55 @@ body {
   color: var(--dark-color);
 }
 
-.container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ddd;
+  padding: 1rem 2rem;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.container {
+  flex: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
 }
 
 .logo {
   display: flex;
   align-items: center;
+  gap: 1rem;
+}
+
+.logo svg {
+  width: 40px;
+  height: 40px;
 }
 
 .logo h1 {
   color: var(--primary-color);
-  margin-left: 10px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 .user-info {
   display: flex;
   align-items: center;
+  gap: 1rem;
 }
 
 .user-avatar {
@@ -59,16 +80,30 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 10px;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.user-role {
+  font-size: 0.875rem;
+  color: var(--medium);
 }
 
 .dashboard {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto auto auto;
   gap: 20px;
+  width: 100%;
 }
 
 .card {
@@ -116,7 +151,14 @@ body {
   grid-column: span 3;
 }
 
-.usage-card, .procurement-card, .expiration-card {
+.usage-card {
+  grid-column: span 2;
+  grid-row: span 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.procurement-card, .expiration-card {
   grid-column: span 1;
 }
 
@@ -257,30 +299,43 @@ body {
 }
 
 .chart-container {
-  height: 250px;
-  width: 100%;
+  flex: 1;
+  min-height: 300px;
+  margin-top: 20px;
   position: relative;
 }
 
+.chart-container svg {
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+}
+
 .tab-container {
-  margin-bottom: 15px;
+  margin: 15px 0;
 }
 
 .tabs {
   display: flex;
+  gap: 10px;
   border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
 }
 
 .tab {
-  padding: 10px 15px;
+  padding: 8px 16px;
   cursor: pointer;
-  border-bottom: 2px solid transparent;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.tab:hover {
+  background-color: var(--light-color);
 }
 
 .tab.active {
-  border-bottom: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  font-weight: 600;
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .alert {
@@ -346,4 +401,94 @@ body {
   .locations-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* Scenario Selector Styles */
+.scenario-selector {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 2rem;
+}
+
+.scenario-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.scenario-header h2 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.scenario-header p {
+  color: #777;
+}
+
+.scenarios-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.scenario-card {
+  background-color: var(--light-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.scenario-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.scenario-card.active {
+  border-color: var(--primary-color);
+  background-color: rgba(142, 68, 173, 0.05);
+}
+
+.scenario-card h3 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.scenario-card p {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.active-scenario {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.current-scenario-info {
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--light-color);
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.current-scenario-info h4 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.current-scenario-info p {
+  color: #666;
+  margin: 0;
 } 

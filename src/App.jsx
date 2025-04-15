@@ -1,31 +1,37 @@
-import { useState } from 'react'
-import './App.css'
-import Header from './components/Header'
-import SummaryMetrics from './components/SummaryMetrics'
-import WasteByCategory from './components/WasteByCategory'
-import WasteTrend from './components/WasteTrend'
-import FacilityComparison from './components/FacilityComparison'
-import ReductionProgress from './components/ReductionProgress'
-import InsightsPanel from './components/InsightsPanel'
+import React, { useState, useEffect } from 'react';
+import './styles/Dashboard2.css';
+import BeautyTrackHeader from './components/BeautyTrackHeader';
+import InventoryOverview from './components/InventoryOverview';
+import LocationComparison from './components/LocationComparison';
+import UsageAnalytics from './components/UsageAnalytics';
+import ScenarioSelector from './components/ScenarioSelector';
+import SimulationService from './services/SimulationService';
 
-function App() {
-  const [activeTab, setActiveTab] = useState('Overview')
+const App = () => {
+  const [dashboardData, setDashboardData] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = SimulationService.subscribeToChanges((scenario) => {
+      if (scenario) {
+        setDashboardData(scenario.data);
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   return (
-    <div className="dashboard">
-      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-      
-      <div className="main-content">
-        <SummaryMetrics />
-        <WasteByCategory />
-        <WasteTrend />
-        <FacilityComparison />
-        <ReductionProgress />
-        <InsightsPanel />
-        
-      </div>
+    <div className="app-container">
+      <BeautyTrackHeader />
+      <main className="container">
+        <ScenarioSelector />
+        <div className="dashboard">
+          <InventoryOverview data={dashboardData?.inventory} />
+          <LocationComparison data={dashboardData?.locations} />
+          <UsageAnalytics data={dashboardData?.usage} />
+        </div>
+      </main>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
