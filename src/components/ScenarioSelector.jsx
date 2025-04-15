@@ -1,54 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import SimulationService from '../services/SimulationService';
 
-const ScenarioSelector = ({ activeScenario, setActiveScenario }) => {
-  const scenarios = [
-    {
-      id: 'textile-waste',
-      name: 'Textile Waste Analytics',
-      description: 'Monitor and analyze waste metrics across textile manufacturing facilities',
-      icon: '🧵'
-    },
-    {
-      id: 'sales-analytics',
-      name: 'Sales Performance Dashboard',
-      description: 'Track sales metrics, customer behavior, and revenue trends',
-      icon: '📊'
-    },
-    {
-      id: 'team-efficiency',
-      name: 'Team Efficiency Metrics',
-      description: 'Measure productivity, project completion rates, and resource allocation',
-      icon: '👥'
-    },
-    {
-      id: 'kpi-control',
-      name: 'KPI Control Center',
-      description: 'Monitor key performance indicators across departments and projects',
-      icon: '🎯'
-    }
-  ];
+const ScenarioSelector = () => {
+  const [scenarios, setScenarios] = useState([]);
+  const [currentScenario, setCurrentScenario] = useState(null);
+
+  useEffect(() => {
+    setScenarios(SimulationService.getAllScenarios());
+    const unsubscribe = SimulationService.subscribeToChanges((scenario) => {
+      setCurrentScenario(scenario);
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <div className="scenario-selector">
       <div className="scenario-header">
-        <h2>Demo Scenarios</h2>
-        <p>Select a business scenario to explore different use cases</p>
+        <h2>Dashboard Simulation</h2>
+        <p>Select a scenario to see how the dashboard responds to different situations</p>
       </div>
-      <div className="scenario-grid">
+      
+      <div className="scenarios-list">
         {scenarios.map((scenario) => (
-          <div 
+          <div
             key={scenario.id}
-            className={`scenario-card ${activeScenario === scenario.id ? 'active' : ''}`}
-            onClick={() => setActiveScenario(scenario.id)}
+            className={`scenario-card ${currentScenario?.id === scenario.id ? 'active' : ''}`}
+            onClick={() => SimulationService.startScenario(scenario.id)}
           >
-            <div className="scenario-icon">{scenario.icon}</div>
-            <div className="scenario-info">
-              <h3>{scenario.name}</h3>
-              <p>{scenario.description}</p>
-            </div>
+            <h3>{scenario.title}</h3>
+            <p>{scenario.description}</p>
+            {currentScenario?.id === scenario.id && (
+              <span className="active-scenario">Currently Active</span>
+            )}
           </div>
         ))}
       </div>
+
+      {currentScenario && (
+        <div className="current-scenario-info">
+          <h4>Active Scenario: {currentScenario.title}</h4>
+          <p>Watch how the dashboard updates in response to this scenario</p>
+        </div>
+      )}
     </div>
   );
 };
